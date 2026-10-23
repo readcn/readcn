@@ -1,0 +1,6 @@
+/skill/
+.codegraph/
+.cursor/
+node_modules/
+/dist/
+/src/_/

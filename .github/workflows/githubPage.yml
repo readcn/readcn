@@ -1,0 +1,13 @@
+name: github page
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  call-deploy:
+    uses: ./.github/workflows/deploy.yml
+    secrets:
+      GH_TOKEN: ${{ secrets.GH_TOKEN }}

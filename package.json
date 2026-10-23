@@ -1,0 +1,34 @@
+{
+  "name": "readcn",
+  "version": "0.1.0",
+  "description": "在这里，读懂中国 · Here, Understand China",
+  "homepage": "https://readcn.github.io",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/readcn/readcn.git"
+  },
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "bun ./dev.js",
+    "tran": "bun ./tran.js",
+    "readme": "bun ./sh/readme.js",
+    "site": "bun ./sh/site.js",
+    "preview": "bun ./sh/siteSrv.js"
+  },
+  "devDependencies": {
+    "@1-/stylus": "^0.1.13",
+    "@1-/tran": "^0.1.9",
+    "@1-/walk": "^0.1.2",
+    "@1-/yml": "^0.1.3",
+    "@3-/killold": "^0.1.3",
+    "@3-/log": "^0.1.9",
+    "@3-/read": "^0.1.4",
+    "@3-/write": "^0.1.2",
+    "@webc.site/cli": "^0.1.9",
+    "js-yaml": "^5.4.0",
+    "pug": "^3.0.4",
+    "vite": "^8.2.2",
+    "yargs": "^18.1.0"
+  }
+}

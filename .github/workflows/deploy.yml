@@ -1,0 +1,31 @@
+name: Deploy GitHub Page
+
+on:
+  workflow_call:
+    secrets:
+      GH_TOKEN:
+        required: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: oven-sh/setup-bun@v2
+
+      - name: Build and Deploy
+        run: |
+          set -ex
+          bun i
+          bun sh/site.js
+          cd dist/site
+          touch .nojekyll
+          git init
+          git config user.name "${{ github.repository }}"
+          git config user.email "${{ github.repository_owner }}@users.noreply.github.com"
+          git add .
+          git commit -q -m "deploy: ${{ github.repository_owner }}"
+          git branch -M main
+          git remote add origin https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/${{ github.repository_owner }}/${{ github.repository_owner }}.github.io.git
+          git push -u origin main -f
