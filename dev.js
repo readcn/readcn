@@ -7,6 +7,7 @@ import yargs from "yargs";
 import { hideBin } from "yargs/helpers";
 import ROOT from "./sh/ROOT.js";
 import blogGen from "./sh/blogGen.js";
+import rssGen from "./sh/rssGen.js";
 
 const ANY_IP = "0.0.0.0",
   LOCAL_IP = "127.0.0.1",
@@ -34,6 +35,7 @@ const ANY_IP = "0.0.0.0",
     await killold();
     await i18nGen(ROOT);
     await blogGen(ROOT);
+    await rssGen(ROOT);
 
     const server = await createServer({
       root: ROOT,

@@ -9,6 +9,7 @@ import stylSvg from "@webc.site/cli/lib/stylSvg.js";
 import ROOT from "./ROOT.js";
 import blogGen from "./blogGen.js";
 import siteHtml from "./lib/siteHtml.js";
+import rssGen from "./rssGen.js";
 
 const SITE = "site",
   CSS_LI = ["/_.css"],
@@ -27,8 +28,10 @@ const SITE = "site",
 
     await i18nGen(root);
     await blogGen(root);
+    await rssGen(root);
     await npm(root, SITE, false);
     await stylSvg(join(src_dir, "styl/demo.styl"), join(site_dir, "_.css"), false);
+
     const zh_dict = await blogGen(root, blog_out_dir);
 
     cpSync(i18n_src, join(site_dir, "i18n"), {
@@ -38,7 +41,7 @@ const SITE = "site",
     publicCp(root, site_dir);
 
     const html = siteHtml(CSS_LI, JS_SRC_LI, root),
-      route_li = [...PAGE_LI, ...Object.keys(zh_dict)];
+      route_li = [...PAGE_LI, ...Object.keys(zh_dict || {})];
 
     route_li.forEach((rel) => write(join(site_dir, rel + ".html"), html));
     write(join(site_dir, ".nojekyll"), "");

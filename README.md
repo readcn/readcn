@@ -2,7 +2,7 @@
 
 # [在这里，读懂中国 · Here, Understand China](https://readcn.github.io)
 
-> 🌐 **Website**: [https://readcn.github.io](https://readcn.github.io) | 💬 **Forum / Discussions**: [https://github.com/orgs/readcn/discussions](https://github.com/orgs/readcn/discussions)
+> 🌐 **Website**: [https://readcn.github.io](https://readcn.github.io) | 📡 **RSS**: [https://readcn.github.io/rss.xml](https://readcn.github.io/rss.xml) | 💬 **Forum / Discussions**: [https://github.com/orgs/readcn/discussions](https://github.com/orgs/readcn/discussions)
 
 ## 目录 / Articles
 
