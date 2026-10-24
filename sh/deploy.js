@@ -1,6 +1,6 @@
 #!/usr/bin/env -S bun
 import { join } from "node:path";
-import { chdir, env } from "node:process";
+import { env } from "node:process";
 import { $ } from "zx";
 import ROOT from "./ROOT.js";
 import site from "./site.js";
@@ -21,7 +21,8 @@ const DEFAULT_OWNER = "readcn",
       remote_url =
         "https://x-access-token:" + gh_token + "@github.com/" + owner + "/" + owner + ".github.io.git";
 
-    chdir(site_dir);
+    $.cwd = site_dir;
+    $.verbose = true;
     await $`git init`;
     await $`git config user.name ${repo}`;
     await $`git config user.email ${email}`;
