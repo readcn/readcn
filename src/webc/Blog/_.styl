@@ -60,26 +60,28 @@ c-blog
 
       > b
         align-items center
+        color #999
         display flex
         font-weight inherit
-        justify-content space-between
-        position relative
+        gap 12px
         margin-left 20px
-        color #999
 
-        &::before
+        &::after
           background-image url('./svg/line.svg')
           background-repeat repeat-x
           content ''
+          flex 1
           height 1px
-          inset auto 40px 16px 0
-          position absolute
-          z-index -1
 
         > .Btn
+          border-radius 16px
           font-size 13px
-          padding 6px 14px
+          height 32px
+          max-height 32px
+          min-height 32px
+          padding 0 14px
 
         > b
           font-size 13px
           font-weight inherit
+          order 1
