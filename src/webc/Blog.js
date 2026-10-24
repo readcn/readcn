@@ -61,15 +61,18 @@ const PROP_LI = ["prefix", "_", "title"],
 
     return year_map;
   },
+  h1Header = (txt) => {
+    const [header, h1, b] = headerNew();
+    h1.textContent = txt;
+    b.remove();
+    return header;
+  },
   listRender = (el, data, read_more_txt) => {
     clearDom(el);
     const { title: site_title, prefix = "/" } = el;
     if (site_title) {
       D.title = site_title;
-      const [header, h1, b] = headerNew();
-      h1.textContent = site_title;
-      b.remove();
-      el.append(header);
+      el.append(h1Header(site_title));
     }
 
     const year_map = yearMapBuild(data, prefix, read_more_txt),
@@ -90,14 +93,16 @@ const PROP_LI = ["prefix", "_", "title"],
 
     const { _: data, title: site_title, mdUrl } = el,
       [title = key, , date = ""] = data?.[key] || [],
-      [header, h1, b] = headerNew(),
       md_el = newEl("c-md");
 
     D.title = site_title ? title + " - " + site_title : title;
-    h1.textContent = title;
-    b.textContent = date;
+    el.append(h1Header(title), md_el);
 
-    el.append(header, md_el);
+    if (date) {
+      const time = newEl("time");
+      time.dateTime = time.textContent = date;
+      el.append(time);
+    }
 
     if (!mdUrl) return;
 

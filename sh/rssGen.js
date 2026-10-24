@@ -6,13 +6,14 @@ import read from "@3-/read";
 import write from "@3-/write";
 import DEFAULT_TITLE from "../src/conf/TITLE.js";
 import CODE_LI from "../src/js/i18n/CODE.js";
+import NAME_LI from "../src/js/i18n/NAME.js";
 import mdHtm from "../src/js/md/htm.js";
 import ROOT from "./ROOT.js";
 import SITE_URL from "./lib/SITE_URL.js";
 import blogDict from "./lib/blogDict.js";
 import mdSplit from "./lib/mdSplit.js";
 
-const DEFAULT_LANG = "zh",
+const DEFAULT_LANG = "en",
   xmlEsc = (str) =>
     String(str || "")
       .replaceAll("&", "&amp;")
@@ -33,12 +34,28 @@ const DEFAULT_LANG = "zh",
     const data = loadYml(yml_path);
     return data?.title || DEFAULT_TITLE;
   },
+  altLinkXml = (lang, idx) => {
+    const href = SITE_URL + "/rss/" + lang + ".xml",
+      name = NAME_LI[idx];
+    return (
+      '    <atom:link href="' +
+      xmlEsc(href) +
+      '" rel="alternate" hreflang="' +
+      xmlEsc(lang) +
+      '" title="' +
+      xmlEsc(name) +
+      '" type="application/rss+xml"/>'
+    );
+  },
+  ALT_LINK_BLOCK = CODE_LI.map(altLinkXml).join("\n"),
   rssItem = (root, lang, [slug, [title, summary, date]]) => {
     const link = SITE_URL + "/" + slug,
+      guid = link + "#" + lang,
       pub_date = date ? new Date(date + "T00:00:00Z").toUTCString() : new Date().toUTCString(),
       md_path = join(root, "i18n", lang, slug + ".md"),
       raw_md = existsSync(md_path) ? read(md_path) : "",
-      html_body = raw_md ? mdHtm(mdBodyStripH1(raw_md)) : mdHtm(summary || "");
+      html_body = raw_md ? mdHtm(mdBodyStripH1(raw_md)) : mdHtm(summary || ""),
+      full_cdata = cdataWrap(html_body);
 
     return (
       "    <item>\n" +
@@ -48,17 +65,20 @@ const DEFAULT_LANG = "zh",
       "      <link>" +
       xmlEsc(link) +
       "</link>\n" +
-      '      <guid isPermaLink="true">' +
-      xmlEsc(link) +
+      '      <guid isPermaLink="false">' +
+      xmlEsc(guid) +
       "</guid>\n" +
       "      <pubDate>" +
       xmlEsc(pub_date) +
       "</pubDate>\n" +
+      "      <dc:language>" +
+      xmlEsc(lang) +
+      "</dc:language>\n" +
       "      <description>" +
-      xmlEsc(summary) +
+      full_cdata +
       "</description>\n" +
       "      <content:encoded>" +
-      cdataWrap(html_body) +
+      full_cdata +
       "</content:encoded>\n" +
       "    </item>"
     );
@@ -70,7 +90,7 @@ const DEFAULT_LANG = "zh",
 
     return (
       '<?xml version="1.0" encoding="UTF-8"?>\n' +
-      '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/">\n' +
+      '<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:dc="http://purl.org/dc/elements/1.1/">\n' +
       "  <channel>\n" +
       "    <title>" +
       xmlEsc(title) +
@@ -87,6 +107,8 @@ const DEFAULT_LANG = "zh",
       '    <atom:link href="' +
       xmlEsc(self_url) +
       '" rel="self" type="application/rss+xml"/>\n' +
+      ALT_LINK_BLOCK +
+      "\n" +
       item_xml_li.join("\n") +
       "\n  </channel>\n" +
       "</rss>\n"

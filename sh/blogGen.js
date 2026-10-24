@@ -12,6 +12,7 @@ import ROOT from "./ROOT.js";
 import mdSplit from "./lib/mdSplit.js";
 
 const MD_EXT = ".md",
+  README_MD = "README.md",
   DEFAULT_LANG = "zh",
   paraFirst = (body) =>
     body
@@ -39,7 +40,7 @@ const MD_EXT = ".md",
   langBlog = async (blog_dir) => {
     const item_li = [];
     await walkRelIgnore(blog_dir, (kind, rel_path) => {
-      if (kind === FILE && rel_path.endsWith(MD_EXT)) {
+      if (kind === FILE && rel_path.endsWith(MD_EXT) && rel_path !== README_MD) {
         item_li.push(mdParse(join(blog_dir, rel_path), rel_path.slice(0, -3)));
       }
     });
